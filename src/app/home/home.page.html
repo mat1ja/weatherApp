@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Blank
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div *ngIf="loadData">
+    <h2>Lokacija: {{ data.lat }}, {{ data.lon }}</h2>
+
+    <ion-item>
+      <ion-label>
+        <h3>{{ data.current.weather[0].description }}</h3>
+      </ion-label>
+
+      <ion-thumbnail slot="start">
+        <img [alt]="data.current.weather[0].main" [src]="data.current.weather[0].icon_url" />
+      </ion-thumbnail>
+    </ion-item>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          Temp
+        </ion-col>
+        <ion-col>
+          {{ data.current.temp_display }}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Hum
+        </ion-col>
+        <ion-col>
+          {{ data.current.humidity_display }}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Pressure
+        </ion-col>
+        <ion-col>
+          {{ data.current.pressure_display }}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Izlazak
+        </ion-col>
+        <ion-col>
+          {{ data.current.sunrise_display }}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Zalazak
+        </ion-col>
+        <ion-col>
+          {{ data.current.sunset_display }}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ng-container *ngIf="data.alerts_exist">
+      <ion-list>
+        <ion-item *ngFor="let item of data.alerts">
+          <ion-label>
+            <h3>{{ item.sender_name }}</h3>
+            <p>{{ item.end_display }}</p>
+            <p>{{ item.description }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ng-container>
+  </div>
+  <div *ngIf="!loadData">
+    no data
+  </div>
+</ion-content>
