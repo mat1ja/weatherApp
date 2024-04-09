@@ -26,11 +26,9 @@ export class HomePage {
     if(response){
       this.loadData = true;
       this.data = response;
-      console.log(response);
     }else{
       this.loadData = false;
     }
-
   }
 
 }

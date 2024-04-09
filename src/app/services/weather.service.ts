@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { WeatherRoot, WeatherRootClass } from '../models/weather';
+import { NativeService } from './native.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +12,26 @@ export class WeatherService {
   weatherData: WeatherRootClass;
 
   constructor(
+    private native: NativeService
   ) { }
 
 
   async getWeather(): Promise<WeatherRootClass>{
     try{
-      return await this.getWeatherFromAPI();
+      let position = await this.native.getMyLocation();
+      let latitude;
+      let longitude;
+
+      if(position == null){
+        latitude = 0;
+        longitude = 0;
+      }else{
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+      }
+
+      return await this.getWeatherFromAPI(latitude,longitude);
+
     }catch{
       return null;
     }
@@ -25,13 +40,10 @@ export class WeatherService {
 
   // save last download to memory
   // create weather object
-
-  getWeatherFromAPI(): Promise<WeatherRootClass>{
+  getWeatherFromAPI(lat, lng): Promise<WeatherRootClass>{
       let promise = new Promise<WeatherRootClass>((res, rej) => {
         const timeNow = Math.floor(Date.now() / 1000); // time in seconds
         let timeDiff = timeNow - this.lastDownload;
-        const lat = '46.39';
-        const lng = '16.42';
         const apiKey = environment.weather_api_key;
         const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lng}&exclude=hourly,daily&lang=hr&units=metric&appid=${apiKey}`;
 
