@@ -3,7 +3,6 @@ import { Storage } from '@ionic/storage-angular';
 import { LoadingController, Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 
-
 @Injectable({
   providedIn: 'root'
 })

@@ -94,6 +94,7 @@ export class WeatherRootClass {
 
 export class CurrentClass {
     dt: number
+    dt_display: string
     sunrise: number
     sunset: number
     sunrise_display: string
@@ -117,6 +118,7 @@ export class CurrentClass {
 
     constructor(data: Current){
         this.dt = data.dt;
+        this.dt_display = dateService.timestampToDateTime(this.dt);
         this.sunrise = data.sunrise;
         this.sunset = data.sunset;
         this.temp = data.temp;
@@ -186,6 +188,3 @@ export class AlertClass {
         this.end_display = dateService.timestampToDateTime(this.end);
     }
 }
-
-
-

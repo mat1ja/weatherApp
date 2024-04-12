@@ -8,8 +8,17 @@
 
 <ion-content class="ion-padding">
 
-  <div *ngIf="loadData">
+  
+
+  <div *ngIf="loadData && dataValid">
     <h2>Lokacija: {{ data.lat }}, {{ data.lon }}</h2>
+    <ion-item lines="none">
+      <p>last update: {{ lastDownloadTime }}</p>
+      
+      <ion-button (click)="loadDataTest()" fill="clear" size="small" slot="end">
+        <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
 
     <ion-item>
       <ion-label>
@@ -76,7 +85,10 @@
       </ion-list>
     </ng-container>
   </div>
-  <div *ngIf="!loadData">
+  <div *ngIf="loadData && !dataValid">
     no data
+  </div>
+  <div *ngIf="positionError">
+    error with position
   </div>
 </ion-content>
