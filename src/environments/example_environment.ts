@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  weather_api_key: 'xxx'  //openweathermap api key
+  weather_api_key: 'xxx',  //openweathermap api key
+  google_map_api: 'xxx' //google maps api key
 };
 
 /*

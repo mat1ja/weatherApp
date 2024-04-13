@@ -4,6 +4,7 @@ import { WeatherRootClass } from '../models/weather';
 import { ControllerService } from '../services/controller.service';
 import { NativeService } from '../services/native.service';
 import { Position } from '@capacitor/geolocation';
+import { GmapsService } from '../services/gmaps.service';
 
 @Component({
   selector: 'app-home',
@@ -17,13 +18,15 @@ export class HomePage {
   positionError: boolean = false;
 
   lastDownloadTime: String = '';
+  locationName: String = '';
 
   data: WeatherRootClass;
 
   constructor(
     private weather: WeatherService,
     private controller: ControllerService,
-    private native: NativeService
+    private native: NativeService,
+    private maps: GmapsService
   ) {}
 
   ionViewWillEnter(){
@@ -43,6 +46,19 @@ export class HomePage {
 
     if(position_response !== undefined){
       this.positionError = false;
+
+      let locationName = await this.maps.getLocationCity(position_response.coords.latitude, position_response.coords.longitude).catch((err) => {
+        console.log(err);
+        return undefined;
+      });
+
+      if(locationName != undefined){
+        this.locationName = locationName;
+      }else{
+        let lat = Math.round(position_response.coords.latitude * 1000 ) / 1000;
+        let lng = Math.round(position_response.coords.longitude * 1000 ) / 1000;
+        this.locationName = `Lokacija: ${lat}, ${lng}`;
+      }
 
       let response: WeatherRootClass = await this.weather.getWeatherFromAPI(position_response.coords.latitude, position_response.coords.longitude).catch((err) => {
         this.dataValid = false;
